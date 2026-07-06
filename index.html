@@ -219,20 +219,20 @@
 
   /* ================= PROGRAMME ================= */
   .timeline{ margin-top:54px; position:relative; }
-  .timeline::before{ content:""; position:absolute; top:20px; bottom:20px; left:150px; width:1px; background:rgba(107,112,92,.28); }
+  .timeline::before{ content:""; position:absolute; top:22px; bottom:22px; left:150px; width:1px; background:rgba(107,112,92,.28); }
   .tl-row{
     display:grid; grid-template-columns:130px 40px 1fr; gap:0; align-items:start;
     padding:6px 0;
   }
   .tl-time{
     font-family:var(--serif); font-weight:500; font-size:clamp(24px,3vw,34px);
-    color:var(--reseda); text-align:right; padding-top:8px; padding-right:8px;
+    color:var(--reseda); text-align:right; line-height:1; padding-top:6px; padding-right:8px;
   }
   .tl-time .ampm{ font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.2em; color:var(--sage); display:block; margin-top:2px; }
-  .tl-axis{ position:relative; display:flex; justify-content:center; align-self:stretch; }
+  .tl-axis{ position:relative; display:flex; justify-content:center; align-self:stretch; font-size:clamp(21px,2.6vw,28px); }
   .tl-dot{
     width:13px; height:13px; border-radius:50%; background:var(--terracotta);
-    border:1px solid var(--terracotta); margin-top:14px; z-index:2; position:relative;
+    border:1px solid var(--terracotta); margin-top:calc(0.575em - 0.5px); z-index:2; position:relative;
   }
   .tl-body{ padding:6px 0 38px 24px; }
   .tl-row:last-child .tl-body{ padding-bottom:0; }
@@ -547,7 +547,7 @@
         </div>
       </div>
       <div class="tl-row key">
-        <div class="tl-time">21:30</div>
+        <div class="tl-time">21:00</div>
         <div class="tl-axis"><span class="tl-dot"></span></div>
         <div class="tl-body">
           <div class="tl-title"><span data-i18n="tl4t">La cena nella corte</span></div>
@@ -555,7 +555,7 @@
         </div>
       </div>
       <div class="tl-row key">
-        <div class="tl-time">23:30</div>
+        <div class="tl-time">23:00</div>
         <div class="tl-axis"><span class="tl-dot"></span></div>
         <div class="tl-body">
           <div class="tl-title"><span data-i18n="tl6t">Il taglio della torta</span></div>
