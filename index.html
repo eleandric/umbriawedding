@@ -296,6 +296,15 @@
   .iban-box{ background:var(--almond); border:1px solid rgba(107,112,92,.14); padding:18px 22px; margin-top:8px; }
   .iban-box .lab{ font-family:var(--sans); font-size:9.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--sage); margin-bottom:6px; }
   .iban-box .val{ font-family:var(--sans); font-weight:400; font-size:15px; letter-spacing:.12em; color:var(--reseda); word-break:break-all; }
+  .copy-iban{
+    display:inline-flex; align-items:center; gap:8px; margin-top:18px; cursor:pointer;
+    font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--reseda); background:var(--paper); border:1px solid rgba(107,112,92,.32);
+    padding:10px 18px; border-radius:999px; transition:background .3s ease, color .3s ease, border-color .3s ease;
+  }
+  .copy-iban:hover{ background:var(--reseda); color:var(--paper); border-color:var(--reseda); }
+  .copy-iban svg{ width:14px; height:14px; }
+  .copy-iban.copied{ background:var(--terracotta); color:var(--paper); border-color:var(--terracotta); }
 
   /* ================= FOOTER ================= */
   .foot{ text-align:center; padding:clamp(72px,9vw,120px) var(--gutter); border-top:1px solid rgba(107,112,92,.14); }
@@ -670,6 +679,10 @@
         <div class="val" style="margin-top:8px;">SWIFT: FEBIITM2</div>
         <div class="lab" style="margin-top:14px; margin-bottom:0;" data-i18n="iban_lab">INTESTATO A:<br/>ELENA GIULIA MARIA BIANCHI E RICCARDO QUERI</div>
       </div>
+      <button type="button" class="copy-iban" id="copyIban" data-iban="IT68Z0301503200000005087623">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+        <span data-i18n="copy_iban">Copia IBAN</span>
+      </button>
       <p style="font-family:var(--sans); font-weight:300; font-size:14.5px; color:var(--olive-deep); margin:22px auto 0; max-width:none; text-align:center;" data-i18n="vvb">VVB</p>
     </div>
   </div>
@@ -772,6 +785,7 @@
       gift_lede:'Il regalo più grande è la vostra presenza.<br/>Il resto sarà il nostro viaggio di nozze in Nuova Zelanda.<br/>Vi manderemo una cartolina :)',
       gift_h:'Per il nostro viaggio di nozze',
       iban_lab:'INTESTATO A:<br/>ELENA GIULIA MARIA BIANCHI E RICCARDO QUERI',
+      copy_iban:'Copia IBAN', copy_iban_done:'IBAN copiato',
       vvb:'VVB'
     },
     en: {
@@ -804,6 +818,7 @@
       gift_lede:'The greatest gift is your presence.<br/>The rest will be our honeymoon in New Zealand.<br/>We’ll send you a postcard :)',
       gift_h:'For our honeymoon',
       iban_lab:'Account holders:<br/>ELENA GIULIA MARIA BIANCHI E RICCARDO QUERI',
+      copy_iban:'Copy IBAN', copy_iban_done:'IBAN copied',
       vvb:'We love you'
     }
   };
@@ -823,6 +838,34 @@
   let savedLang = null;
   try { savedLang = localStorage.getItem('er_lang'); } catch(e) {}
   setLang(savedLang || (((navigator.language || '').toLowerCase().indexOf('it') === 0) ? 'it' : 'en'));
+
+  // ---- Copy IBAN ----
+  (function(){
+    const btn = document.getElementById('copyIban');
+    if (!btn) return;
+    const label = btn.querySelector('span');
+    let resetTimer = null;
+    btn.addEventListener('click', async () => {
+      const iban = btn.getAttribute('data-iban');
+      try {
+        await navigator.clipboard.writeText(iban);
+      } catch(e) {
+        const ta = document.createElement('textarea');
+        ta.value = iban; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(_){}
+        document.body.removeChild(ta);
+      }
+      const L = I18N[window.__lang || 'it'];
+      btn.classList.add('copied');
+      label.textContent = L.copy_iban_done;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        btn.classList.remove('copied');
+        label.textContent = L.copy_iban;
+      }, 2000);
+    });
+  })();
 
   // ---- Story carousel ----
   (function(){
